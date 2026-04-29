@@ -34,6 +34,9 @@
                 Utilisez le menu de navigation pour commencer. La base de données est initialisée avec quelques exemples d’arbres&nbsp;;
                 vous pouvez en ajouter d’autres via le formulaire.
             </p>
+            <div class="logo-container">
+                <img src="assets/arbre_projet_logo.png" alt="Logo projet arbres">
+            </div>
         </div>
     </main>
     <footer>

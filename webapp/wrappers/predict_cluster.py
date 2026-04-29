@@ -43,11 +43,10 @@ def main():
         print(json.dumps({ 'error': 'Invalid numeric values' }))
         sys.exit(1)
 
-    # Determine model path
+    # Détermination du chemin du modèle : identique au wrapper du dossier webapp.
     script_dir = os.path.dirname(os.path.abspath(__file__))
     model_name = f'kmeans_model_k{nb}.pkl'
-    # Chemin du modèle : cherche dans le dossier parent (project root) à côté
-    # du répertoire webapp. Adaptez si nécessaire.
+    # Chemin du modèle : IA/Client_1/kmeans_model_kX.pkl depuis la racine du dépôt
     model_path = os.path.abspath(os.path.join(
         script_dir,
         '..', '..',
@@ -55,7 +54,6 @@ def main():
         'Client_1',
         model_name
     ))
-    print(f"Loading model from: {model_path}", file=sys.stderr)
 
     if not os.path.exists(model_path):
         # Return unknown cluster if file is missing

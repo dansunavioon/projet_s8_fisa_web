@@ -50,6 +50,16 @@ main {
     margin: 0 auto;
 }
 
+.logo-container {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.logo-container img {
+    max-width: 300px;
+    height: auto;
+}
+
 form {
     background-color: #ffffff;
     padding: 25px;
@@ -87,6 +97,43 @@ form button {
 
 form button:hover {
     background-color: #a98250;
+}
+
+.cluster-controls {
+    text-align: center;
+    margin-top: 10px;
+}
+
+.cluster-controls select {
+    padding: 6px 10px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    margin-left: 10px;
+}
+
+#legendBox {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    background: rgba(255,255,255,0.95);
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-size: 13px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    z-index: 1000;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 4px;
+}
+
+.legend-color {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    margin-right: 8px;
 }
 
 table {

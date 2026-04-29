@@ -54,7 +54,16 @@
         </div>
         <div class="map-wrapper">
             <div class="map-container" id="treesMap"></div>
+
+            <div id="legendBox"></div>
             <div id="coordsBox">Lat : -, Lon : -</div>
+        </div>
+        <div class="cluster-controls">
+            <label for="nbClusters">Nombre de clusters :</label>
+            <select id="nbClusters">
+                <option value="2">2</option>
+                <option value="3" selected>3</option>
+            </select>
         </div>
         <div class="buttons-container">
             <button id="clusterBtn">Prédire les clusters</button>
@@ -159,16 +168,50 @@
         });
     }
 
+    function updateLegend(nbClusters) {
+        const legend = document.getElementById('legendBox');
+
+        let html = '<strong>Légende</strong><br>';
+
+        if (nbClusters == 2) {
+            html += `
+                <div class="legend-item">
+                    <div class="legend-color" style="background:green"></div> Grand
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background:red"></div> Petit
+                </div>
+            `;
+        } else if (nbClusters == 3) {
+            html += `
+                <div class="legend-item">
+                    <div class="legend-color" style="background:red"></div> Grand
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background:green"></div> Petit
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background:orange"></div> Moyen
+                </div>
+            `;
+        }
+
+        legend.innerHTML = html;
+    }
+
     // Bouton prédiction cluster
     document.getElementById('clusterBtn').addEventListener('click', async () => {
-        const res = await fetch('api/predict_cluster_api.php?nb_clusters=3');
+        const nbClusters = document.getElementById('nbClusters').value;
+
+        const res = await fetch(`api/predict_cluster_api.php?nb_clusters=${nbClusters}`);
         const data = await res.json();
+
         if (data.success) {
-            // Recharger la liste et la carte
             await loadTrees();
-            alert('Clusters mis à jour !');
-        } else {
-            alert('Erreur lors de la prédiction des clusters');
+
+            updateLegend(nbClusters); // 👈 AJOUT IMPORTANT
+
+            alert(`${data.updated.length} arbres mis à jour`);
         }
     });
 
