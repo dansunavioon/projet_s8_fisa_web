@@ -1,0 +1,1 @@
+// Placeholder for map functions. Functions are defined directly in the PHP pages.

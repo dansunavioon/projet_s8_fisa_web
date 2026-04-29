@@ -1,0 +1,10 @@
+# Environnement virtuel
+.venv/
+
+# Fichiers de log
+*.log   
+
+# Fichiers de cache
+__pycache__/
+*.py[cod]
+*$py.class

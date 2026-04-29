@@ -1,0 +1,22 @@
+{
+    "features": [
+        "haut_tot",
+        "tronc_diam",
+        "age_estim",
+        "fk_stadedev",
+        "fk_port",
+        "fk_pied",
+        "fk_situation",
+        "fk_revetement",
+        "remarquable",
+        "feuillage",
+        "clc_quartier",
+        "clc_secteur"
+    ],
+    "metrics": {
+        "accuracy": 0.9556812824139557,
+        "precision": 0.7596153846153846,
+        "recall": 0.5337837837837838,
+        "f1": 0.626984126984127
+    }
+}
