@@ -168,6 +168,7 @@
         });
     }
 
+    // Fonction pour gérer l’état de chargement des boutons
     function setLoading(button, otherButton, isLoading, text) {
         if (isLoading) {
             button.dataset.originalText = button.textContent;
@@ -187,6 +188,7 @@
         }
     }
 
+    // Mettre à jour la légende en fonction du nombre de clusters
     function updateLegend(nbClusters) {
         const legend = document.getElementById('legendBox');
 
