@@ -1,1 +1,0 @@
-// JavaScript placeholder file. Custom scripts are embedded in view_trees.php.

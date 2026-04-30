@@ -168,6 +168,25 @@
         });
     }
 
+    function setLoading(button, otherButton, isLoading, text) {
+        if (isLoading) {
+            button.dataset.originalText = button.textContent;
+            button.textContent = text;
+            button.disabled = true;
+
+            if (otherButton) {
+                otherButton.disabled = true;
+            }
+        } else {
+            button.textContent = button.dataset.originalText;
+            button.disabled = false;
+
+            if (otherButton) {
+                otherButton.disabled = false;
+            }
+        }
+    }
+
     function updateLegend(nbClusters) {
         const legend = document.getElementById('legendBox');
 
@@ -201,30 +220,64 @@
 
     // Bouton prédiction cluster
     document.getElementById('clusterBtn').addEventListener('click', async () => {
+        const clusterBtn = document.getElementById('clusterBtn');
+        const riskBtn = document.getElementById('riskBtn');
+        const result = document.getElementById('result');
         const nbClusters = document.getElementById('nbClusters').value;
 
-        const res = await fetch(`api/predict_cluster_api.php?nb_clusters=${nbClusters}`);
-        const data = await res.json();
+        setLoading(clusterBtn, riskBtn, true, 'Clustering...');
 
-        if (data.success) {
-            await loadTrees();
+        result.innerHTML = '<p class="loading-message">Calcul des clusters en cours...</p>';
 
-            updateLegend(nbClusters); // 👈 AJOUT IMPORTANT
+        try {
+            const res = await fetch(`api/predict_cluster_api.php?nb_clusters=${nbClusters}`);
+            const data = await res.json();
 
-            alert(`${data.updated.length} arbres mis à jour`);
+            if (data.success) {
+                await loadTrees();
+                updateLegend(nbClusters);
+
+                result.innerHTML = `<p>${data.updated.length} arbres mis à jour</p>`;
+            } else {
+                result.textContent = 'Erreur : ' + data.error;
+            }
+        } catch (e) {
+            result.textContent = 'Erreur pendant le clustering';
+        } finally {
+            setLoading(clusterBtn, riskBtn, false);
         }
     });
 
     // Bouton prédiction risque
     document.getElementById('riskBtn').addEventListener('click', async () => {
         if (!selectedTreeId) return;
-        const res = await fetch('api/predict_risk_api.php?tree_id=' + selectedTreeId);
-        const data = await res.json();
+
+        const clusterBtn = document.getElementById('clusterBtn');
+        const riskBtn = document.getElementById('riskBtn');
         const result = document.getElementById('result');
-        if (data.success) {
-            result.innerHTML = `<div class="prediction-result"><p>Risque : ${data.prediction == 1 ? '<span class=\"danger\">Élevé</span>' : '<span class=\"success\">Faible</span>'}</p><p>Probabilité (abattu) : ${data.proba_abattu}</p><p>Probabilité (en place) : ${data.proba_en_place}</p></div>`;
-        } else {
-            result.textContent = 'Erreur: ' + data.error;
+
+        setLoading(riskBtn, clusterBtn, true, 'Prédiction...');
+
+        result.innerHTML = '<p class="loading-message">Calcul du risque...</p>';
+
+        try {
+            const res = await fetch('api/predict_risk_api.php?tree_id=' + selectedTreeId);
+            const data = await res.json();
+
+            if (data.success) {
+                result.innerHTML = `
+                    <div class="prediction-result">
+                        <p>Risque : ${data.prediction == 1 ? '<span class="danger">Élevé</span>' : '<span class="success">Faible</span>'}</p>
+                        <p>Probabilité abattu : ${data.proba_abattu}</p>
+                    </div>
+                `;
+            } else {
+                result.textContent = 'Erreur : ' + data.error;
+            }
+        } catch (e) {
+            result.textContent = 'Erreur pendant la prédiction';
+        } finally {
+            setLoading(riskBtn, clusterBtn, false);
         }
     });
 

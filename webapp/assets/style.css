@@ -60,6 +60,12 @@ main {
     height: auto;
 }
 
+.loading-message {
+    text-align: center;
+    font-weight: 600;
+    color: #8B6F47;
+}
+
 form {
     background-color: #ffffff;
     padding: 25px;
